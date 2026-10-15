@@ -1,0 +1,5 @@
+nice.json v1 has very high magnitude oscillations in differential equations. However these are due to a negative parameter, breaking the mass action system.
+
+TODO:
+determine source of negative parameter values and fix plz
+

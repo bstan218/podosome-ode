@@ -1,0 +1,52 @@
+# Equations for Podosome Model
+
+[Cdc42*] = $C_a$ \
+[Cdc42] = $C_i$ \
+[ARHGAP17*] = $G_a$ \
+[ARHGAP17] = $G_i$ \
+[Actin] = $A$ \
+[R] = $R$ \
+[M] = $M$ \
+$$
+H(x, k_{max}, k, n) = \frac{k_{max} x^n}{k^n + x^n}
+$$
+$$
+\frac{dC_a}{dt} = S_{signal}C_i(S_0 + S_1C_a^2 ) - C_a\left(\delta_0 + \delta_1G_a \right) 
+$$
+
+$$
+C_i = C_t-C_a
+$$
+$$
+\frac{dG_a}{dt} = G_i(S_0 + S_1C_a) - G_a ( \delta_0 + \delta_1A  )
+$$
+$$
+G_i = G_t - G_a
+$$
+
+$$
+\frac{dA}{dt} = S_0 + S_1C_a - A ( \delta_0 + \delta_1 M)
+$$
+
+
+$$
+\frac{dR}{dt} = S_0 + S_1G_a - R( \delta_0 + \delta_1 M)
+$$
+
+$$
+\frac{dM}{dt} = S_0 + S_1R - \delta_0M
+$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+

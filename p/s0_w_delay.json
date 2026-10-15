@@ -1,0 +1,64 @@
+{
+    "Ca_constants": {
+        "Ct": 8,
+        "Signal": 0.26,
+        "S0": 0.01,
+        "S1": 1,
+        "D0": 0,
+        "D1": 0.3
+    },
+    "Ca_variables": [
+        "Ca",
+        "Ga"
+    ],
+    "Ga_constants": {
+        "Gt": 6.0,
+        "S0": 0,
+        "S1": 0.3,
+        "D0": 0,
+        "D1": 0.1
+    },
+    "Ga_variables": [
+        "Ga",
+        "Ca",
+        "A"
+    ],
+    "A_constants": {
+        "S0": 0,
+        "S1": 0.3,
+        "D0": 0,
+        "D1": 1.0
+    },
+    "A_variables": [
+        "A",
+        "Ca",
+        "M"
+    ],
+    "R_constants": {
+        "S0": 0,
+        "S1": 1,
+        "D0": 0,
+        "D1": 1.0
+    },
+    "R_variables": [
+        "R",
+        "Ga",
+        "M"
+    ],
+    "M_constants": {
+        "S0": 0,
+        "S1": 1,
+        "D0": 5.0
+    },
+    "M_variables": [
+        "M",
+        "R"
+    ],
+    "initial_variables": {
+        "Ca": 0,
+        "Ga": 0,
+        "A": 0,
+        "R": 0,
+        "M": 0.0
+    }
+}
