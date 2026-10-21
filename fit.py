@@ -12,7 +12,7 @@ from mass_action import MassAction, MAParameters, MAPFactory
 
 
 factory = MAPFactory(steps=20000, dt=0.001)
-CXPB, MUTPB, NGEN, NIND = 0.5, 0.2, 40, 200
+CXPB, MUTPB, NGEN, NIND = 0.5, 0.2, 50, 200
 
 
 
@@ -53,7 +53,7 @@ def measure_oscillation(model:MassAction):
     return result
     
 
-def pod_lifecycle_osc_fitness(factory:MAPFactory, individual:creator.Individual, signal_range=1, signal_step=.05, return_parameters=False):
+def pod_lifecycle_osc_fitness(factory:MAPFactory, individual, signal_range=1, signal_step=.05, return_parameters=False):
     parameters = factory.from_list(individual)
     #print(parameters)
     init_signal = parameters.Ca_constants.Signal
