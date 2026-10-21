@@ -18,6 +18,7 @@ OSC_THRESHOLD = 0.9
 
 
 
+
 ####################### Define Fitness Function ##############################
 
 def measure_oscillation(model:MassAction):
