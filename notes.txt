@@ -1,5 +1,16 @@
 nice.json v1 has very high magnitude oscillations in differential equations. However these are due to a negative parameter, breaking the mass action system.
 
-TODO:
-determine source of negative parameter values and fix plz
+Info for each ea run:
+- # gens to reach oscillation (.9)
+- best p and fitness at the end of each gen
 
+If using all offspring members, will be overcounting since optimal will end up multiple times. 
+So  I think should just save param set of the best at the end of each generation.
+
+PCA / ML training csv:
+t
+
+
+
+TODO:
+determine robust relation between dt, signal and Ct. 

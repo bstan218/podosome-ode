@@ -190,10 +190,9 @@ class MAPFactory:
             gen= lambda: rng.uniform(low=mean-span/2, high=mean+span/2)
 
         elif distribution == 'exponential':
-            gen = lambda: rng.exponential(scale=1/mean)
- 
+            gen = lambda: rng.exponential(scale=1/mean) 
         ca_constants = CaConstants(
-                Ct = 1 + gen(),
+                Ct = gen(),
                 Signal = gen(),
                 S0 = gen(),
                 S1 = gen(),
@@ -201,7 +200,7 @@ class MAPFactory:
                 D1 = gen()
                 )
         ga_constants = GaConstants(
-                Gt = 1 + gen(),
+                Gt = gen(),
                 S0 = gen(),
                 S1 = gen(),
                 D0 = gen(),
