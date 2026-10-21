@@ -13,6 +13,7 @@ from mass_action import MassAction, MAParameters, MAPFactory
 
 factory = MAPFactory(steps=20000, dt=0.001)
 CXPB, MUTPB, NGEN, NIND = 0.5, 0.2, 50, 200
+OSC_THRESHOLD = 0.9
 
 
 
@@ -173,23 +174,20 @@ def evolutionary_algorithm(return_all_generations:bool = False):
         #TODO: change so printing variance instead
         print([round(e, 2) for e in fitnesses])
 
-        new_best = False
         for ind, fit in zip(invalid_ind, fitnesses):
             ind.fitness.values = (fit,)
             if fit > highest_fitness_value:
-                new_best = True
                 highest_fitness_value = fit
                 fittest = ind
 
-        if return_all_generations and new_best:
-            best_of_gen_params.append(fittest.aslist())
-            best_of_gen_fitness.append(highest_fitness_value)
+                best_of_gen_params.append(fittest)
+                best_of_gen_fitness.append(highest_fitness_value)
 
         # The population is entirely replaced by the offspring
         pop[:] = offspring
         p = factory.from_list(fittest)
         p.to_json('fittest.json')
-        if highest_fitness_value > 0.9:
+        if highest_fitness_value > OSC_THRESHOLD:
             if return_all_generations:
                 return best_of_gen_params, best_of_gen_fitness
             else:

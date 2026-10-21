@@ -3,7 +3,7 @@ import pandas as pd
 from fit import evolutionary_algorithm, pod_lifecycle_osc_fitness
 
 
-nits = 50
+nits = 10
 OUTFILE = "ea_analysis.csv"
 
 
