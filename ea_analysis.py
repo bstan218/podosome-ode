@@ -6,8 +6,6 @@ from fit import evolutionary_algorithm, pod_lifecycle_osc_fitness
 nits = 10
 OUTFILE = "ea_analysis.csv"
 
-
-
 if __name__ == '__main__':
     df = pd.DataFrame()
 
