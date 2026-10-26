@@ -12,8 +12,8 @@ from mass_action import MassAction, MAParameters, MAPFactory
 
 
 ### Set Globals ###
-CXPB, MUTPB, NGEN, NIND = 0.5, 0.2, 50, 200
-#CXPB, MUTPB, NGEN, NIND = 0.5, 0.2, 3, 10
+#CXPB, MUTPB, NGEN, NIND = 0.5, 0.2, 50, 200
+CXPB, MUTPB, NGEN, NIND = 0.5, 0.2, 3, 10
 OSC_THRESHOLD = 0.9
 
 FACTORY = MAPFactory(steps=20000, dt=0.001)
