@@ -16,7 +16,6 @@ CXPB, MUTPB, NGEN, NIND = 0.5, 0.2, 50, 200
 OSC_THRESHOLD = 0.9
 
 FACTORY = MAPFactory(steps=20000, dt=0.001)
-POOL = Pool()
 
 ####################### Define Fitness Function ##############################
 
@@ -132,6 +131,7 @@ toolbox.register("select", tools.selTournament, tournsize=3)
 ########################## Evolutionary Algorithm ######################
 
 def evolutionary_algorithm(return_each_gen_best:bool = False):
+    pool = Pool()
     fittest_individual = None
     highest_fitness_value = 0
 
@@ -139,16 +139,18 @@ def evolutionary_algorithm(return_each_gen_best:bool = False):
 
 
     # Evaluate the entire population
-    #TODO: Fix this so it uses POOL
+    #TODO: Fix this so it uses pool
+    """
     pop = toolbox.population(n=NIND)
     for i in range(len(pop)):
         individual = pop[i]
         fitness, optimal_signal_individual= pod_lifecycle_osc_fitness(individual)
         individual = optimal_signal_individual
+    """
 
 
 
-    fitnesses = list(POOL.map(toolbox.evaluate, pop))
+    fitnesses = list(pool.map(toolbox.evaluate, pop))
     print(fitnesses)
     for ind, fit in zip(pop, fitnesses):
         ind.fitness.values = (fit,)
@@ -177,10 +179,9 @@ def evolutionary_algorithm(return_each_gen_best:bool = False):
                 mutant = toolbox.mutate(offspring[i])
                 del mutant.fitness.values
                 offspring[i] = mutant
-#TODO: still have some mutants slipping through constraints. probably due to initially generated parameters getting crossed. Need to prevent.
         # Evaluate the individuals with an invalid fitness
         invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-        fitnesses = list(POOL.map(toolbox.evaluate, invalid_ind))
+        fitnesses = list(pool.map(toolbox.evaluate, invalid_ind))
 
         #TODO: change so printing variance instead
         print([round(e, 2) for e in fitnesses])
@@ -223,10 +224,14 @@ def evolutionary_algorithm(return_each_gen_best:bool = False):
 
 
 if __name__ == '__main__':
+    """
     fittest_individual, highest_fitness_value = evolutionary_algorithm()
     highest_fitness_value, fittest_true_signal = pod_lifecycle_osc_fitness(FACTORY, fittest_individual,return_parameters=True)
     print(highest_fitness_value)
     fittest_true_signal.to_json('fittest_individual.json')
+    """
+    record_setters = evolutionary_algorithm(return_each_gen_best=True)
+    print(record_setters)
 
     """
     p = FACTORY.from_json('fittest_individual.json')
