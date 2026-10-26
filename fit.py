@@ -13,6 +13,7 @@ from mass_action import MassAction, MAParameters, MAPFactory
 
 ### Set Globals ###
 CXPB, MUTPB, NGEN, NIND = 0.5, 0.2, 50, 200
+#CXPB, MUTPB, NGEN, NIND = 0.5, 0.2, 3, 10
 OSC_THRESHOLD = 0.9
 
 FACTORY = MAPFactory(steps=20000, dt=0.001)
@@ -55,7 +56,7 @@ def pod_lifecycle_osc_fitness(individual,
                               factory:MAPFactory=FACTORY, 
                               signal_range=1, 
                               signal_step=.05, 
-                              ):
+                              ) -> tuple[float, list[float]]:
     parameters = factory.from_list(individual)
     #print(parameters)
     init_signal = parameters.Ca_constants.Signal
@@ -72,12 +73,12 @@ def pod_lifecycle_osc_fitness(individual,
         model = MassAction(parameters)
         fitness = measure_oscillation(model)
         if fitness == -1:
-            return 0
+            return (0, parameters.aslist())
         if fitness > max_fitness:
             max_fitness = fitness
             optimal_individual[:] = parameters.aslist()
             
-    return max_fitness, optimal_individual
+    return (max_fitness, optimal_individual)
 
 
 
@@ -129,7 +130,6 @@ toolbox.register("select", tools.selTournament, tournsize=3)
 
 
 ########################## Evolutionary Algorithm ######################
-
 def evolutionary_algorithm(return_each_gen_best:bool = False):
     pool = Pool()
     fittest_individual = None
@@ -139,20 +139,18 @@ def evolutionary_algorithm(return_each_gen_best:bool = False):
 
 
     # Evaluate the entire population
-    #TODO: Fix this so it uses pool
-    """
     pop = toolbox.population(n=NIND)
+    results = list(pool.map(pod_lifecycle_osc_fitness, pop))
+    fitnesses = []
     for i in range(len(pop)):
         individual = pop[i]
-        fitness, optimal_signal_individual= pod_lifecycle_osc_fitness(individual)
-        individual = optimal_signal_individual
-    """
+        fitness = results[i][0]
+        fitnesses.append(fitness)
+        optimal_signal_individual= results[i][1]
+        individual[:] = optimal_signal_individual
 
-
-
-    fitnesses = list(pool.map(toolbox.evaluate, pop))
     print(fitnesses)
-    for ind, fit in zip(pop, fitnesses):
+    for ind,fit in zip(pop, fitnesses):
         ind.fitness.values = (fit,)
         if fit > highest_fitness_value:
             highest_fitness_value = fit
@@ -179,32 +177,36 @@ def evolutionary_algorithm(return_each_gen_best:bool = False):
                 mutant = toolbox.mutate(offspring[i])
                 del mutant.fitness.values
                 offspring[i] = mutant
+
         # Evaluate the individuals with an invalid fitness
         invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-        fitnesses = list(pool.map(toolbox.evaluate, invalid_ind))
+        results = list(pool.map(pod_lifecycle_osc_fitness, invalid_ind))
+        fitnesses = []
+        for i in range(len(invalid_ind)):
+            individual = invalid_ind[i]
+            fitness = results[i][0]
+            fitnesses.append(fitness)
+            optimal_signal_individual= results[i][1]
+            individual[:] = optimal_signal_individual
 
-        #TODO: change so printing variance instead
         print([round(e, 2) for e in fitnesses])
-
         for ind, fit in zip(invalid_ind, fitnesses):
             ind.fitness.values = (fit,)
             if fit > highest_fitness_value:
                 highest_fitness_value = fit
                 fittest_individual = ind
 
-                best_of_gen_params.append(fittest_individual)
-                best_of_gen_fitness.append(highest_fitness_value)
+                #I dont think I need these lines anymore? but too afraid to delete
+                #best_of_gen_params.append(fittest_individual)
+                #best_of_gen_fitness.append(highest_fitness_value)
 
         ###save record
         record = [highest_fitness_value,
                   generation,
                   fittest_individual[:]]
-        try:
-            i = record_setters[-1] + 1
-        except IndexError:
-            i = 0
 
-        record_setters[i] = record
+        current_max_index = record_setters.shape[1] - 1
+        record_setters[current_max_index + 1] = record
 
         # The population is entirely replaced by the offspring
         pop[:] = offspring
@@ -231,7 +233,7 @@ if __name__ == '__main__':
     fittest_true_signal.to_json('fittest_individual.json')
     """
     record_setters = evolutionary_algorithm(return_each_gen_best=True)
-    print(record_setters)
+    print(record_setters.T)
 
     """
     p = FACTORY.from_json('fittest_individual.json')
