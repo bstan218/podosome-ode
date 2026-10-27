@@ -6,7 +6,7 @@ from pandas import DataFrame
 from fit import evolutionary_algorithm, pod_lifecycle_osc_fitness
 
 
-nits = 5
+nits = 1000
 OUTFILE = "iterations.csv"
 
 if __name__ == '__main__':
