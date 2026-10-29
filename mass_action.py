@@ -354,7 +354,7 @@ class MassAction(Model):
 #####################################################################################################
 # Trajectory Analysis
 
-def plot_trajectory(model:MassAction):
+def plot_trajectory(model:MassAction, save_file:str|None=None):
     trajectory = model.generate_trajectory()
 
     #fig, (ax1, ax2, ax3) = plt.subplots(1,3)
@@ -386,6 +386,8 @@ def plot_trajectory(model:MassAction):
             f'dCa/dt = {}')
     """
 
+    if save_file:
+        plt.savefig(save_file)
     plt.show()
 
 if __name__ == '__main__':
