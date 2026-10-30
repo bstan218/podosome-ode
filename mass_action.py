@@ -416,7 +416,7 @@ if __name__ == '__main__':
 
     model = MassAction(parameters = parameters)
 
-    plot_trajectory(model)
+    plot_trajectory(model, save_file='default.png')
 
 
 """
